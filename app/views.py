@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -12,15 +13,18 @@ from django.urls import reverse
 from django.utils.html import format_html
 
 def HomePage(request):
-  documents = Document.objects.select_related('user', 'author').all()
+  documents_list = Document.objects.select_related('user', 'author').all()
+  paginator = Paginator(documents_list, 12)
+
+  page_number = request.GET.get('page')
+  page_obj = paginator.get_page(page_number)
   context = {
-    'documents': documents
+    'documents': page_obj
   }
   return render(request, 'HomePage.html', context)
 
 def DocumentDetailPage(request, document_id):
     document = get_object_or_404(Document.objects.select_related('user', 'author'), id=document_id)
-    document = get_object_or_404(Document.objects.select_related('user'), id=document_id)
     context = {
         'document': document
     }
@@ -168,12 +172,13 @@ def UploadPage(request):
 @login_required(login_url='login')
 def ToggleFavorite(request, document_id):
     document = get_object_or_404(Document, id=document_id)
-    if request.user in document.favorited_by.all():
-        document.favorited_by.remove(request.user)
-        messages.success(request, 'Đã xóa khỏi danh sách yêu thích.')
-    else:
-        document.favorited_by.add(request.user)
-        messages.success(request, 'Đã thêm vào danh sách yêu thích.')
+    if request.method == 'POST':
+        if request.user in document.favorited_by.all():
+            document.favorited_by.remove(request.user)
+            messages.success(request, 'Đã xóa khỏi danh sách yêu thích.')
+        else:
+            document.favorited_by.add(request.user)
+            messages.success(request, 'Đã thêm vào danh sách yêu thích.')
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 @login_required(login_url='login')
