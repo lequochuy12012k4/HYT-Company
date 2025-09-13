@@ -39,13 +39,16 @@
                                 <a href="{% url 'document-detail' document.id %}" class="text-white bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded-md text-sm transition duration-300">Xem chi tiết</a>
                                 <a href="{{ document.document.url }}" download class="text-gray-700 bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-md text-sm transition duration-300">Tải xuống</a>
                             </div>
-                            <a href="{% url 'toggle-favorite' document.id %}" class="text-gray-400 hover:text-red-500 transition duration-300">
-                                {% if request.user in document.favorited_by.all %}
-                                    <i class="fas fa-heart text-red-500 text-xl"></i>
-                                {% else %}
-                                    <i class="far fa-heart text-xl"></i>
-                                {% endif %}
-                            </a>
+                            <form action="{% url 'toggle-favorite' document.id %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="text-gray-400 hover:text-red-500 transition duration-300">
+                                    {% if request.user in document.favorited_by.all %}
+                                        <i class="fas fa-heart text-red-500 text-xl"></i>
+                                    {% else %}
+                                        <i class="far fa-heart text-xl"></i>
+                                    {% endif %}
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

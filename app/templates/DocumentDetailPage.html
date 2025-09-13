@@ -16,6 +16,16 @@
             <div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mt-6">
                 <button id="preview-button" class="w-full md:w-auto text-white bg-green-500 hover:bg-green-600 px-5 py-2 rounded-md text-lg transition duration-300">Xem trước</button>
                 <a href="{{ document.document.url }}" download class="w-full md:w-auto text-center text-white bg-blue-500 hover:bg-blue-600 px-5 py-2 rounded-md text-lg transition duration-300">Tải xuống</a>
+                <form action="{% url 'toggle-favorite' document.id %}" method="POST" class="w-full md:w-auto">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full text-white {% if is_favorite %}bg-red-500 hover:bg-red-600{% else %}bg-yellow-500 hover:bg-yellow-600{% endif %} px-5 py-2 rounded-md text-lg transition duration-300">
+                        {% if is_favorite %}
+                            Bỏ yêu thích
+                        {% else %}
+                            Yêu thích
+                        {% endif %}
+                    </button>
+                </form>
                 <a href="{% url 'home' %}" class="w-full md:w-auto text-center text-gray-700 bg-gray-200 hover:bg-gray-300 px-5 py-2 rounded-md text-lg transition duration-300">Quay lại</a>
             </div>
         </div>

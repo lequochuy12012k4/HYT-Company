@@ -25,8 +25,12 @@ def HomePage(request):
 
 def DocumentDetailPage(request, document_id):
     document = get_object_or_404(Document.objects.select_related('user', 'author'), id=document_id)
+    is_favorite = False
+    if request.user.is_authenticated:
+        is_favorite = request.user.favorite_documents.filter(id=document_id).exists()
     context = {
-        'document': document
+        'document': document,
+        'is_favorite': is_favorite
     }
     return render(request, 'DocumentDetailPage.html', context)
 

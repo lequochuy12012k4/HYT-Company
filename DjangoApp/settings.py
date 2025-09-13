@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure--yp=ma#mfx(pkl0jo=8vtm+(m(j_n(mit)^-898(g0x2-g-q1o
 DEBUG = True
 
 ALLOWED_HOSTS = []
-CSRF_TRUSTED_ORIGINS = ['https://8000-firebase-djangoapp-1757003725302.cluster-ancjwrkgr5dvux4qug5rbzyc2y.cloudworkstations.dev']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000','https://8000-firebase-hty-company-1757746066281.cluster-w5vd22whf5gmav2vgkomwtc4go.cloudworkstations.dev']
 
 # Application definition
 
